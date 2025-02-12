@@ -1,6 +1,7 @@
 #scans ip address for address and pings for information on up or down
 
 # python scan2.py 192.168.1.0/24
+# ./ip_scanner.py -p 80 192.168.1.0/24
 
 # pip install scapy dnspython
 
@@ -14,8 +15,9 @@ from scapy.all import ARP, Ether, srp
 import dns.resolver
 import dns.reversename
 
-a = sys.argv[1] # ip range to scan 
-# b = sys.argv[2] # save to csv 
+a = sys.argv[1] # scanning method 
+# b = sys.argv[2] # ports to scan 
+# c = sys.argv[3] # specifies ip address range
 
 def scan_net():
     ip_range = ip_network(a, strict=False)
