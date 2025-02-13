@@ -23,30 +23,32 @@ def scan_net():
     for ip in ip_range.hosts():
         responsTimestart = time.time()
         status = 'N/A'
-        ports = []
         toScan = f"{ip}"
-
-        ping(toScan)
-
-        print(f"{ip}  ({status}) ({(math.floor((time.time() - responsTimestart)*100))/100}ms)")
-        print(ports)
+        if ping(toScan):
+            status = "UP"
+            print(f"{ip}  ({status}) ({(math.floor((time.time() - responsTimestart)*100))/100}ms)")
+            open_ports(toScan)
+        else:
+            status = "DOWN"
+            print(f"{ip}  ({status}) ({(math.floor((time.time() - responsTimestart)*100))/100}ms)")
     print(f"total scan time: {math.floor(((time.time()) - total_start_time) * 1000)}ms")     
 
-
 def ping(host):
-    ports = []
     packet = IP(dst=host)/ICMP()
     response = sr1(packet, timeout=2, verbose=0)
-    if response:
-        status = "UP"
-        for port in range(0, 1000):
-                pkt = IP(dst=host) / TCP(dport=port, flags="S")
-                response = sr1(pkt, timeout=1, verbose=0)
-                if response is not None and response.haslayer(TCP):
-                    if response[TCP].flags == "SA":  # SYN-ACK response
-                        ports.append(port)
-    else:
-        status = "DOWN"
-    return status, ports
+    if response is None:
+        return False
+    elif response.haslayer(ICMP):
+        return True
+
+def open_ports(ip):
+    start = 1
+    end = 1024
+    for port in range(start, end):
+        pkt = IP(dst=ip) / TCP(dport=port, flags="S")
+        response = sr1(pkt, timeout=1, verbose=0)
+        if response is not None and response.haslayer(TCP):
+            if response[TCP].flags == "SA":  # SYN-ACK response
+                print(f"    - Port {port} (OPEN)")
 
 scan_net()
