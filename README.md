@@ -7,6 +7,5 @@ This script scans an IP address range to check if hosts are up or down and ident
 pip install scapy dnspython
 
 # Example Usage
-python scan2.py A 192.168.1.0/24  # Scans the IP range with default ports (21, 80, 443)
-./ip_scanner.py -p 80 192.168.1.0/24  # Example for scanning specific ports 
-Example usage:
+python scan2.py A 192.168.1.0/24 - Scans the IP range with default ports (21, 80, 443)
+./ip_scanner.py all 192.168.1.0/24 - Example for scanning all ports
