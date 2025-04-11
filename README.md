@@ -8,4 +8,4 @@ pip install scapy dnspython
 
 # Example Usage
 python scan2.py A 192.168.1.0/24 - Scans the IP range with default ports (21, 80, 443)
-./ip_scanner.py all 192.168.1.0/24 - Example for scanning all ports
+./ip_scanner.py 80 192.168.1.0/24 - Example for scanning port 80
